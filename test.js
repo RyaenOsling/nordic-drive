@@ -73,4 +73,19 @@ try {
     process.exit(1);
 }
 
+console.log("=== Running Task 4 Tests: Grid Expansion Template ===");
+try {
+    const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf-8');
+    const css = fs.readFileSync(path.join(__dirname, 'style.css'), 'utf-8');
+    
+    assert.ok(css.includes('.car-details-panel'), "Details panel styling is missing");
+    assert.ok(css.includes('grid-column: 1 / -1'), "Details panel does not stretch across columns");
+    
+    console.log("PASS: Grid expansion template verified!");
+} catch (err) {
+    console.error("FAIL:", err.message);
+    process.exit(1);
+}
+
+
 

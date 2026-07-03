@@ -129,6 +129,112 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
             renderCatalog();
         });
 
+        // Grid details panel logic
+        let activeDetailsPanel = null;
+
+        grid.addEventListener('click', (e) => {
+            const card = e.target.closest('.car-card');
+            if (!card) return;
+
+            const carId = card.dataset.id;
+            const car = carsData.find(c => c.id === carId);
+            if (!car) return;
+
+            // Close current panel if exists
+            if (activeDetailsPanel) {
+                activeDetailsPanel.remove();
+                document.querySelectorAll('.car-card').forEach(c => c.classList.remove('car-card--active'));
+            }
+
+            // If clicking same card, toggle off
+            if (activeDetailsPanel && activeDetailsPanel.dataset.carId === carId) {
+                activeDetailsPanel = null;
+                return;
+            }
+
+            card.classList.add('car-card--active');
+
+            // Create detailed panel element
+            const panel = document.createElement('div');
+            panel.className = 'car-details-panel';
+            panel.style.display = 'grid';
+            panel.dataset.carId = carId;
+            
+            panel.innerHTML = `
+                <div class="car-details-panel__gallery">
+                    <div class="car-details-panel__main-img-wrapper">
+                        <div class="car-details-panel__main-img" style="width:100%; height:250px; background:#E8E6E0; display:flex; align-items:center; justify-content:center; color:#5A5A5C; font-family:'Cormorant Garamond', serif; font-size:1.5rem; font-style:italic;">${car.name} — Ракурс 1</div>
+                    </div>
+                    <div class="car-details-panel__thumbs">
+                        <div class="car-details-panel__thumb car-details-panel__thumb--active" data-index="0">Ракурс 1</div>
+                        <div class="car-details-panel__thumb" data-index="1">Ракурс 2</div>
+                        <div class="car-details-panel__thumb" data-index="2">Ракурс 3</div>
+                    </div>
+                </div>
+                <div class="car-details-panel__info">
+                    <h3 class="car-details-panel__title">${car.name}</h3>
+                    <div class="car-details-panel__specs-grid">
+                        <div class="spec-item">
+                            <span class="spec-item__label">Батарея</span>
+                            <span class="spec-item__value">${car.specs.battery}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-item__label">Запас хода</span>
+                            <span class="spec-item__value">${car.range}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-item__label">Разгон 0-100</span>
+                            <span class="spec-item__value">${car.acceleration}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-item__label">Мест</span>
+                            <span class="spec-item__value">${car.specs.capacity}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-item__label">Багажник</span>
+                            <span class="spec-item__value">${car.specs.cargo}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-item__label">Мощность</span>
+                            <span class="spec-item__value">${car.power}</span>
+                        </div>
+                    </div>
+                    <button class="btn car-details-panel__cta-btn" id="start-booking-btn">Перейти к бронированию</button>
+                </div>
+            `;
+
+            // Find insertion index (last card in the current row)
+            const cards = Array.from(grid.querySelectorAll('.car-card'));
+            const cardIndex = cards.indexOf(card);
+            
+            let columns = 3;
+            if (window.innerWidth <= 768) columns = 1;
+            else if (window.innerWidth <= 1024) columns = 2;
+
+            const rowNumber = Math.floor(cardIndex / columns);
+            const lastIndexInRow = Math.min((rowNumber + 1) * columns - 1, cards.length - 1);
+            const insertionTarget = cards[lastIndexInRow];
+
+            insertionTarget.after(panel);
+            activeDetailsPanel = panel;
+
+            setTimeout(() => {
+                panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+
+            // Gallery logic
+            const thumbs = panel.querySelectorAll('.car-details-panel__thumb');
+            const mainImgWrapper = panel.querySelector('.car-details-panel__main-img-wrapper');
+            thumbs.forEach(thumb => {
+                thumb.addEventListener('click', () => {
+                    thumbs.forEach(t => t.classList.remove('car-details-panel__thumb--active'));
+                    thumb.classList.add('car-details-panel__thumb--active');
+                    const index = thumb.dataset.index;
+                    mainImgWrapper.innerHTML = `<div class="car-details-panel__main-img" style="width:100%; height:250px; background:#E8E6E0; display:flex; align-items:center; justify-content:center; color:#5A5A5C; font-family:'Cormorant Garamond', serif; font-size:1.5rem; font-style:italic;">${car.name} — Ракурс ${parseInt(index) + 1}</div>`;
+                });
+            });
+        });
+
         renderCatalog();
     });
 }
