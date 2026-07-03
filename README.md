@@ -50,3 +50,10 @@
 ```bash
 node test.js
 ```
+
+---
+
+## 🔗 Ссылки
+
+- **Репозиторий GitHub:** [https://github.com/RyaenOsling/nordic-drive](https://github.com/RyaenOsling/nordic-drive)
+- **Живая демо-версия (GitHub Pages):** [https://ryaenosling.github.io/nordic-drive/](https://ryaenosling.github.io/nordic-drive/)
