@@ -93,7 +93,7 @@ const carsData = [
         range: '487 км',
         acceleration: '4.1 сек',
         images: [
-            'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=800&q=80',
             'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80',
             'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
         ],
@@ -109,7 +109,7 @@ const carsData = [
         range: '456 км',
         acceleration: '5.1 сек',
         images: [
-            'https://images.unsplash.com/photo-1611245803273-04423405781a?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=800&q=80',
             'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80',
             'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80'
         ],
