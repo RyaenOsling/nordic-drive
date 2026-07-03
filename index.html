@@ -45,6 +45,39 @@
             </div>
         </div>
     </header>
+    <main>
+        <section id="catalog" class="catalog">
+            <div class="catalog__header">
+                <h2 class="catalog__title">Наш флот</h2>
+                <div class="catalog__filters">
+                    <div class="filter-group">
+                        <span class="filter-group__label">Класс</span>
+                        <button class="filter-btn active" data-filter-type="class" data-filter-value="all">Все</button>
+                        <button class="filter-btn" data-filter-type="class" data-filter-value="sedan">Седан</button>
+                        <button class="filter-btn" data-filter-type="class" data-filter-value="suv">Внедорожник</button>
+                        <button class="filter-btn" data-filter-type="class" data-filter-value="touring">Туринг</button>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-group__label">Трансмиссия</span>
+                        <button class="filter-btn active" data-filter-type="transmission" data-filter-value="all">Все</button>
+                        <button class="filter-btn" data-filter-type="transmission" data-filter-value="auto">Автомат</button>
+                        <button class="filter-btn" data-filter-type="transmission" data-filter-value="manual">Механика</button>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-group__label">Цена</span>
+                        <select class="filter-select" id="price-sort">
+                            <option value="default">По умолчанию</option>
+                            <option value="asc">Сначала дешевле</option>
+                            <option value="desc">Сначала дороже</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="catalog__grid" id="cars-grid">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </section>
+    </main>
     <script src="script.js" defer></script>
 </body>
 </html>

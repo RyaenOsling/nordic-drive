@@ -44,3 +44,33 @@ try {
     process.exit(1);
 }
 
+console.log("=== Running Task 3 Tests: Catalog Filter Logic ===");
+try {
+    const scriptPath = path.join(__dirname, 'script.js');
+    // Mock standard DOM globals before requiring the script
+    global.document = {
+        querySelectorAll: () => [],
+        querySelector: () => ({ addEventListener: () => {} }),
+        addEventListener: () => {}
+    };
+    global.window = {};
+    
+    const app = require(scriptPath);
+    assert.ok(Array.isArray(app.carsData), "carsData is missing or not an array");
+    
+    // Test filter function directly
+    const mockFilters = { class: 'suv', transmission: 'all', priceSort: 'default' };
+    const filtered = app.filterCars(app.carsData, mockFilters);
+    
+    // Assert that all returned items are SUVs
+    filtered.forEach(car => {
+        assert.strictEqual(car.class, 'suv', `Found non-SUV car in filtered list: ${car.name}`);
+    });
+    
+    console.log("PASS: Catalog filter logic verified!");
+} catch (err) {
+    console.error("FAIL:", err.message);
+    process.exit(1);
+}
+
+
