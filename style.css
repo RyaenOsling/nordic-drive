@@ -411,9 +411,9 @@ h1, h2, h3 {
 }
 
 .car-details-panel__main-img {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .car-details-panel__thumbs {
@@ -424,13 +424,16 @@ h1, h2, h3 {
 .car-details-panel__thumb {
     width: 80px;
     height: 60px;
-    background-color: var(--bg-primary);
     border: 1px solid var(--border-color);
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
     transition: var(--transition-smooth);
+}
+
+.car-details-panel__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .car-details-panel__thumb:hover,

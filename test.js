@@ -94,6 +94,7 @@ try {
     // Test validateDates function
     assert.strictEqual(app.validateDates("2026-07-04", "2026-07-03"), false, "End date cannot be before start date");
     assert.strictEqual(app.validateDates("2026-07-04", "2026-07-06"), true, "Valid sequence should pass validation");
+    assert.strictEqual(app.validateDates("2026-07-01", "2026-07-02"), false, "Start date in the past should fail validation");
 
     // Test pricing calculation
     const totalCost = app.calculateCost(10000, "2026-07-01", "2026-07-05");

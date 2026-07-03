@@ -2,8 +2,45 @@ function validateDates(startStr, endStr) {
     if (!startStr || !endStr) return false;
     const start = new Date(startStr);
     const end = new Date(endStr);
-    return end > start;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return end > start && start >= today;
 }
+
+function getCarSvg(classType, color = '#2D4239') {
+    if (classType === 'suv') {
+        return `<svg viewBox="0 0 200 90" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;">
+            <path d="M15,55 L25,50 C25,50 40,25 70,22 C100,19 130,22 145,28 C155,32 170,42 178,50 L188,53 C192,55 195,60 195,65 L192,72 L172,72 C172,64 165,58 157,58 C149,58 142,64 142,72 L72,72 C72,64 65,58 57,58 C49,58 42,64 42,72 L10,72 L8,65 C8,60 11,56 15,55 Z" stroke="${color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="57" cy="72" r="10" fill="#F6F5F2" stroke="${color}" stroke-width="1.8"/>
+            <circle cx="57" cy="72" r="3.5" fill="${color}"/>
+            <circle cx="157" cy="72" r="10" fill="#F6F5F2" stroke="${color}" stroke-width="1.8"/>
+            <circle cx="157" cy="72" r="3.5" fill="${color}"/>
+            <path d="M70,26 L110,26 L110,45 L65,45 Z" fill="none" stroke="${color}" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M116,26 L140,30 L135,45 L116,45 Z" fill="none" stroke="${color}" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>`;
+    } else if (classType === 'sedan') {
+        return `<svg viewBox="0 0 200 90" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;">
+            <path d="M15,58 L30,52 C30,52 48,28 78,25 C108,22 135,28 150,38 C160,45 172,52 180,56 L188,58 C192,59 195,62 195,66 L192,72 L172,72 C172,64 165,58 157,58 C149,58 142,64 142,72 L72,72 C72,64 65,58 57,58 C49,58 42,64 42,72 L10,72 L8,66 C8,62 11,59 15,58 Z" stroke="${color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="57" cy="72" r="10" fill="#F6F5F2" stroke="${color}" stroke-width="1.8"/>
+            <circle cx="57" cy="72" r="3.5" fill="${color}"/>
+            <circle cx="157" cy="72" r="10" fill="#F6F5F2" stroke="${color}" stroke-width="1.8"/>
+            <circle cx="157" cy="72" r="3.5" fill="${color}"/>
+            <path d="M75,28 L110,28 L110,48 L68,48 Z" fill="none" stroke="${color}" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M116,28 L142,32 L138,48 L116,48 Z" fill="none" stroke="${color}" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>`;
+    } else {
+        return `<svg viewBox="0 0 200 90" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;">
+            <path d="M15,58 L30,52 C30,52 48,27 75,26 C102,25 145,25 155,27 C165,29 174,38 180,48 L188,53 C192,55 195,59 195,64 L192,72 L172,72 C172,64 165,58 157,58 C149,58 142,64 142,72 L72,72 C72,64 65,58 57,58 C49,58 42,64 42,72 L10,72 L8,64 C8,59 11,55 15,58 Z" stroke="${color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="57" cy="72" r="10" fill="#F6F5F2" stroke="${color}" stroke-width="1.8"/>
+            <circle cx="57" cy="72" r="3.5" fill="${color}"/>
+            <circle cx="157" cy="72" r="10" fill="#F6F5F2" stroke="${color}" stroke-width="1.8"/>
+            <circle cx="157" cy="72" r="3.5" fill="${color}"/>
+            <path d="M72,28 L110,28 L110,48 L65,48 Z" fill="none" stroke="${color}" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M116,28 L148,28 L142,48 L116,48 Z" fill="none" stroke="${color}" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>`;
+    }
+}
+
 
 function calculateCost(dailyRate, startStr, endStr) {
     const start = new Date(startStr);
@@ -23,7 +60,11 @@ const carsData = [
         power: '489 л.с.',
         range: '610 км',
         acceleration: '5.0 сек',
-        images: ['assets/images/polestar3-1.webp', 'assets/images/polestar3-2.webp', 'assets/images/polestar3-3.webp'],
+        images: [
+            'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=800&q=80'
+        ],
         specs: { battery: '111 кВт⋅ч', speed: '210 км/ч', capacity: '5 мест', cargo: '484 л' }
     },
     {
@@ -35,7 +76,11 @@ const carsData = [
         power: '272 л.с.',
         range: '476 км',
         acceleration: '5.7 сек',
-        images: ['assets/images/ex30-1.webp', 'assets/images/ex30-2.webp', 'assets/images/ex30-3.webp'],
+        images: [
+            'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&q=80'
+        ],
         specs: { battery: '69 кВт⋅ч', speed: '180 км/ч', capacity: '5 мест', cargo: '318 л' }
     },
     {
@@ -47,7 +92,11 @@ const carsData = [
         power: '530 л.с.',
         range: '487 км',
         acceleration: '4.1 сек',
-        images: ['assets/images/etron-1.webp', 'assets/images/etron-2.webp', 'assets/images/etron-3.webp'],
+        images: [
+            'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
+        ],
         specs: { battery: '93 кВт⋅ч', speed: '245 км/ч', capacity: '4 мест', cargo: '405 л' }
     },
     {
@@ -59,7 +108,11 @@ const carsData = [
         power: '476 л.с.',
         range: '456 км',
         acceleration: '5.1 сек',
-        images: ['assets/images/taycan-1.webp', 'assets/images/taycan-2.webp', 'assets/images/taycan-3.webp'],
+        images: [
+            'https://images.unsplash.com/photo-1611245803273-04423405781a?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80'
+        ],
         specs: { battery: '93.4 кВт⋅ч', speed: '220 км/ч', capacity: '5 мест', cargo: '446 л' }
     }
 ];
@@ -106,7 +159,7 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
                 card.dataset.id = car.id;
                 card.innerHTML = `
                     <div class="car-card__image-wrapper">
-                        <div style="width:100%; height:150px; background:#E8E6E0; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#5A5A5C; font-family:'Cormorant Garamond', serif; font-size:1.1rem; font-style:italic;">${car.name}</div>
+                        <img src="${car.images[0]}" alt="${car.name}" class="car-card__image" loading="lazy">
                     </div>
                     <div class="car-card__meta">
                         <h3 class="car-card__name">${car.name}</h3>
@@ -178,12 +231,18 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
             panel.innerHTML = `
                 <div class="car-details-panel__gallery">
                     <div class="car-details-panel__main-img-wrapper">
-                        <div class="car-details-panel__main-img" style="width:100%; height:250px; background:#E8E6E0; display:flex; align-items:center; justify-content:center; color:#5A5A5C; font-family:'Cormorant Garamond', serif; font-size:1.5rem; font-style:italic;">${car.name} — Ракурс 1</div>
+                        <img src="${car.images[0]}" alt="${car.name}" class="car-details-panel__main-img" id="main-detail-img" style="width:100%; height:100%; object-fit:cover;">
                     </div>
                     <div class="car-details-panel__thumbs">
-                        <div class="car-details-panel__thumb car-details-panel__thumb--active" data-index="0">Ракурс 1</div>
-                        <div class="car-details-panel__thumb" data-index="1">Ракурс 2</div>
-                        <div class="car-details-panel__thumb" data-index="2">Ракурс 3</div>
+                        <div class="car-details-panel__thumb car-details-panel__thumb--active" data-index="0">
+                            <img src="${car.images[0]}" alt="Ракурс 1" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div class="car-details-panel__thumb" data-index="1">
+                            <img src="${car.images[1]}" alt="Ракурс 2" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div class="car-details-panel__thumb" data-index="2">
+                            <img src="${car.images[2]}" alt="Ракурс 3" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
                     </div>
                 </div>
                 <div class="car-details-panel__info">
@@ -239,13 +298,13 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
 
             // Gallery logic
             const thumbs = panel.querySelectorAll('.car-details-panel__thumb');
-            const mainImgWrapper = panel.querySelector('.car-details-panel__main-img-wrapper');
+            const mainImg = panel.querySelector('#main-detail-img');
             thumbs.forEach(thumb => {
                 thumb.addEventListener('click', () => {
                     thumbs.forEach(t => t.classList.remove('car-details-panel__thumb--active'));
                     thumb.classList.add('car-details-panel__thumb--active');
-                    const index = thumb.dataset.index;
-                    mainImgWrapper.innerHTML = `<div class="car-details-panel__main-img" style="width:100%; height:250px; background:#E8E6E0; display:flex; align-items:center; justify-content:center; color:#5A5A5C; font-family:'Cormorant Garamond', serif; font-size:1.5rem; font-style:italic;">${car.name} — Ракурс ${parseInt(index) + 1}</div>`;
+                    const index = parseInt(thumb.dataset.index);
+                    mainImg.src = car.images[index];
                 });
             });
 
@@ -381,6 +440,8 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
 
                     infoPanel.addEventListener('click', (e) => {
                         if (e.target.id === 'wizard-next-1') {
+                            wizardState.start = infoPanel.querySelector('#booking-start').value;
+                            wizardState.end = infoPanel.querySelector('#booking-end').value;
                             if (validateDates(wizardState.start, wizardState.end)) {
                                 wizardState.step = 2;
                                 renderWizard();
@@ -393,6 +454,9 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
                             renderWizard();
                         }
                         if (e.target.id === 'wizard-next-2') {
+                            wizardState.name = infoPanel.querySelector('#client-name').value;
+                            wizardState.email = infoPanel.querySelector('#client-email').value;
+                            wizardState.phone = infoPanel.querySelector('#client-phone').value;
                             if (wizardState.name && wizardState.email.includes('@') && wizardState.phone) {
                                 wizardState.step = 3;
                                 renderWizard();
