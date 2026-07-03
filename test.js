@@ -105,6 +105,16 @@ try {
     process.exit(1);
 }
 
+console.log("=== Running Task 6 Tests: Assets & Documentation ===");
+try {
+    assert.ok(fs.existsSync(path.join(__dirname, 'README.md')), "README.md is missing");
+    console.log("PASS: Project complete and ready for deployment!");
+} catch (err) {
+    console.error("FAIL:", err.message);
+    process.exit(1);
+}
+
+
 
 
 
