@@ -87,5 +87,24 @@ try {
     process.exit(1);
 }
 
+console.log("=== Running Task 5 Tests: Booking Logic & Validation ===");
+try {
+    const app = require(path.join(__dirname, 'script.js'));
+    
+    // Test validateDates function
+    assert.strictEqual(app.validateDates("2026-07-04", "2026-07-03"), false, "End date cannot be before start date");
+    assert.strictEqual(app.validateDates("2026-07-04", "2026-07-06"), true, "Valid sequence should pass validation");
+
+    // Test pricing calculation
+    const totalCost = app.calculateCost(10000, "2026-07-01", "2026-07-05");
+    assert.strictEqual(totalCost, 40000, `Calculation error: expected 40000 but got ${totalCost}`);
+    
+    console.log("PASS: Booking validation logic verified!");
+} catch (err) {
+    console.error("FAIL:", err.message);
+    process.exit(1);
+}
+
+
 
 

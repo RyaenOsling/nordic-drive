@@ -1,3 +1,18 @@
+function validateDates(startStr, endStr) {
+    if (!startStr || !endStr) return false;
+    const start = new Date(startStr);
+    const end = new Date(endStr);
+    return end > start;
+}
+
+function calculateCost(dailyRate, startStr, endStr) {
+    const start = new Date(startStr);
+    const end = new Date(endStr);
+    const diffTime = Math.abs(end - start);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return (diffDays || 1) * dailyRate;
+}
+
 const carsData = [
     {
         id: 'polestar-3',
@@ -233,6 +248,176 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
                     mainImgWrapper.innerHTML = `<div class="car-details-panel__main-img" style="width:100%; height:250px; background:#E8E6E0; display:flex; align-items:center; justify-content:center; color:#5A5A5C; font-family:'Cormorant Garamond', serif; font-size:1.5rem; font-style:italic;">${car.name} — Ракурс ${parseInt(index) + 1}</div>`;
                 });
             });
+
+            // Wizard initialization
+            panel.addEventListener('click', (ev) => {
+                if (ev.target.id === 'start-booking-btn') {
+                    const infoPanel = panel.querySelector('.car-details-panel__info');
+                    
+                    let wizardState = {
+                        step: 1,
+                        start: '',
+                        end: '',
+                        name: '',
+                        email: '',
+                        phone: ''
+                    };
+
+                    function renderWizard() {
+                        if (wizardState.step === 1) {
+                            infoPanel.innerHTML = `
+                                <div class="wizard">
+                                    <div class="wizard__header">
+                                        <span class="wizard__step-title wizard__step-title--active">1. Даты</span>
+                                        <span class="wizard__step-title">2. Инфо</span>
+                                        <span class="wizard__step-title">3. Оплата</span>
+                                    </div>
+                                    <div class="wizard__body">
+                                        <div class="wizard__form">
+                                            <div class="form-group">
+                                                <label for="booking-start">Начало аренды</label>
+                                                <input type="date" class="form-input" id="booking-start" value="${wizardState.start}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="booking-end">Конец аренды</label>
+                                                <input type="date" class="form-input" id="booking-end" value="${wizardState.end}">
+                                            </div>
+                                            <div class="form-error" id="date-error">Дата окончания должна быть позже даты начала.</div>
+                                        </div>
+                                    </div>
+                                    <div class="wizard__footer">
+                                        <button class="btn btn--secondary" id="wizard-cancel" style="background:#EFEDE8; color:#18181A;">Отмена</button>
+                                        <button class="btn" id="wizard-next-1">Продолжить</button>
+                                    </div>
+                                </div>
+                            `;
+                        } else if (wizardState.step === 2) {
+                            infoPanel.innerHTML = `
+                                <div class="wizard">
+                                    <div class="wizard__header">
+                                        <span class="wizard__step-title">1. Даты</span>
+                                        <span class="wizard__step-title wizard__step-title--active">2. Инфо</span>
+                                        <span class="wizard__step-title">3. Оплата</span>
+                                    </div>
+                                    <div class="wizard__body">
+                                        <div class="wizard__form">
+                                            <div class="form-group">
+                                                <label for="client-name">ФИО</label>
+                                                <input type="text" class="form-input" id="client-name" value="${wizardState.name}" placeholder="Иванов Иван Иванович">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="client-email">Email</label>
+                                                <input type="email" class="form-input" id="client-email" value="${wizardState.email}" placeholder="example@mail.ru">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="client-phone">Телефон</label>
+                                                <input type="tel" class="form-input" id="client-phone" value="${wizardState.phone}" placeholder="+7 (999) 999-99-99">
+                                            </div>
+                                            <div class="form-error" id="info-error">Пожалуйста, заполните все поля корректно.</div>
+                                        </div>
+                                    </div>
+                                    <div class="wizard__footer">
+                                        <button class="btn" id="wizard-prev-2" style="background:#EFEDE8; color:#18181A;">Назад</button>
+                                        <button class="btn" id="wizard-next-2">Продолжить</button>
+                                    </div>
+                                </div>
+                            `;
+                        } else if (wizardState.step === 3) {
+                            const total = calculateCost(car.price, wizardState.start, wizardState.end);
+                            infoPanel.innerHTML = `
+                                <div class="wizard">
+                                    <div class="wizard__header">
+                                        <span class="wizard__step-title">1. Даты</span>
+                                        <span class="wizard__step-title">2. Инфо</span>
+                                        <span class="wizard__step-title wizard__step-title--active">3. Оплата</span>
+                                    </div>
+                                    <div class="wizard__body">
+                                        <div class="wizard__summary">
+                                            <div class="wizard__summary-row">
+                                                <span>Автомобиль</span>
+                                                <span>${car.name}</span>
+                                            </div>
+                                            <div class="wizard__summary-row">
+                                                <span>Тариф</span>
+                                                <span>${car.price.toLocaleString('ru-RU')} ₽/сут.</span>
+                                            </div>
+                                            <div class="wizard__summary-row">
+                                                <span>Даты аренды</span>
+                                                <span>${wizardState.start} — ${wizardState.end}</span>
+                                            </div>
+                                            <div class="wizard__summary-row wizard__summary-row--total">
+                                                <span>Итого</span>
+                                                <span>${total.toLocaleString('ru-RU')} ₽</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="wizard__footer">
+                                        <button class="btn" id="wizard-prev-3" style="background:#EFEDE8; color:#18181A;">Назад</button>
+                                        <button class="btn" id="wizard-confirm">Подтвердить</button>
+                                    </div>
+                                </div>
+                            `;
+                        } else if (wizardState.step === 4) {
+                            infoPanel.innerHTML = `
+                                <div class="wizard__success">
+                                    <div class="wizard__success-icon">✓</div>
+                                    <h3>Бронирование подтверждено!</h3>
+                                    <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 0.9rem;">
+                                        Спасибо за выбор Nordic Drive. Мы отправили подтверждение на email ${wizardState.email}.
+                                    </p>
+                                </div>
+                            `;
+                        }
+                    }
+
+                    // Event delegation for wizard controls
+                    infoPanel.addEventListener('change', (e) => {
+                        if (e.target.id === 'booking-start') wizardState.start = e.target.value;
+                        if (e.target.id === 'booking-end') wizardState.end = e.target.value;
+                        if (e.target.id === 'client-name') wizardState.name = e.target.value;
+                        if (e.target.id === 'client-email') wizardState.email = e.target.value;
+                        if (e.target.id === 'client-phone') wizardState.phone = e.target.value;
+                    });
+
+                    infoPanel.addEventListener('click', (e) => {
+                        if (e.target.id === 'wizard-next-1') {
+                            if (validateDates(wizardState.start, wizardState.end)) {
+                                wizardState.step = 2;
+                                renderWizard();
+                            } else {
+                                infoPanel.querySelector('#date-error').style.display = 'block';
+                            }
+                        }
+                        if (e.target.id === 'wizard-prev-2') {
+                            wizardState.step = 1;
+                            renderWizard();
+                        }
+                        if (e.target.id === 'wizard-next-2') {
+                            if (wizardState.name && wizardState.email.includes('@') && wizardState.phone) {
+                                wizardState.step = 3;
+                                renderWizard();
+                            } else {
+                                infoPanel.querySelector('#info-error').style.display = 'block';
+                            }
+                        }
+                        if (e.target.id === 'wizard-prev-3') {
+                            wizardState.step = 2;
+                            renderWizard();
+                        }
+                        if (e.target.id === 'wizard-confirm') {
+                            wizardState.step = 4;
+                            renderWizard();
+                        }
+                        if (e.target.id === 'wizard-cancel') {
+                            // Close details panel
+                            const activeCard = document.querySelector('.car-card--active');
+                            if (activeCard) activeCard.click();
+                        }
+                    });
+
+                    renderWizard();
+                }
+            });
         });
 
         renderCatalog();
@@ -243,6 +428,8 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
 if (typeof module !== 'undefined') {
     module.exports = {
         carsData,
-        filterCars
+        filterCars,
+        validateDates,
+        calculateCost
     };
 }
